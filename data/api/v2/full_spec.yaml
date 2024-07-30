@@ -16507,6 +16507,8 @@ components:
       properties:
         data:
           $ref: '#/components/schemas/RelationshipToPermissionData'
+      required:
+      - data
       type: object
     RelationshipToPermissionData:
       description: Relationship to permission object.
@@ -16516,6 +16518,8 @@ components:
           type: string
         type:
           $ref: '#/components/schemas/PermissionsType'
+      required:
+      - type
       type: object
     RelationshipToPermissions:
       description: Relationship to multiple permissions objects.
@@ -22790,7 +22794,6 @@ components:
           $ref: '#/components/schemas/TeamLinkType'
       required:
       - attributes
-      - id
       - type
       type: object
     TeamLinkAttributes:
@@ -24101,6 +24104,10 @@ components:
               have permission to edit those SLOs.
             slos_read: View SLOs and status corrections.
             slos_write: Create, edit, and delete SLOs.
+            synthetics_default_settings_read: View the default settings for Synthetic
+              Monitoring.
+            synthetics_default_settings_write: Edit the default settings for Synthetic
+              Monitoring.
             synthetics_global_variable_read: View, search, and use Synthetics global
               variables.
             synthetics_global_variable_write: Create, edit, and delete global variables
@@ -34525,6 +34532,9 @@ paths:
       x-menu-order: 7
       x-undo:
         type: safe
+    x-merge-override:
+      delete: true
+      post: true
   /api/v2/roles/{role_id}/users:
     delete:
       description: Removes a user from a role.
