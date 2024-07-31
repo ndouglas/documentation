@@ -16530,6 +16530,8 @@ components:
           type: string
         type:
           $ref: '#/components/schemas/PermissionsType'
+      required:
+      - type
       type: object
     RelationshipToPermissions:
       description: Relationship to multiple permissions objects.
@@ -16539,6 +16541,8 @@ components:
           items:
             $ref: '#/components/schemas/RelationshipToPermissionData'
           type: array
+      required:
+      - data
       type: object
     RelationshipToRole:
       description: Relationship to role.
@@ -17441,8 +17445,6 @@ components:
       properties:
         permissions:
           $ref: '#/components/schemas/RelationshipToPermissions'
-        users:
-          $ref: '#/components/schemas/RelationshipToUsers'
       type: object
     RoleResponse:
       description: Response containing information about a single role.
@@ -17472,6 +17474,11 @@ components:
         name:
           description: Name of the role.
           type: string
+        user_count:
+          description: The RoleUpdateAttributes user_count.
+          format: int32
+          maximum: 2147483647
+          type: integer
       type: object
     RoleUpdateData:
       description: Data related to the update of a role.
@@ -17487,9 +17494,7 @@ components:
         type:
           $ref: '#/components/schemas/RolesType'
       required:
-      - attributes
       - type
-      - id
       type: object
     RoleUpdateRequest:
       description: Update a role.
@@ -22804,7 +22809,6 @@ components:
           $ref: '#/components/schemas/TeamLinkType'
       required:
       - attributes
-      - id
       - type
       type: object
     TeamLinkAttributes:
@@ -24216,6 +24220,10 @@ components:
               have permission to edit those SLOs.
             slos_read: View SLOs and status corrections.
             slos_write: Create, edit, and delete SLOs.
+            synthetics_default_settings_read: View the default settings for Synthetic
+              Monitoring.
+            synthetics_default_settings_write: Edit the default settings for Synthetic
+              Monitoring.
             synthetics_global_variable_read: View, search, and use Synthetics global
               variables.
             synthetics_global_variable_write: Create, edit, and delete global variables
@@ -34431,6 +34439,8 @@ paths:
       x-menu-order: 4
       x-undo:
         type: idempotent
+    x-merge-override:
+      patch: true
   /api/v2/roles/{role_id}/clone:
     post:
       description: Clone an existing role
@@ -40384,6 +40394,11 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '429':
           $ref: '#/components/responses/TooManyRequestsResponse'
+      security:
+      - apiKeyAuth: []
+        appKeyAuth: []
+      - AuthZ:
+        - workflows_read
       summary: List workflow instances
       tags:
       - Workflow Automation
