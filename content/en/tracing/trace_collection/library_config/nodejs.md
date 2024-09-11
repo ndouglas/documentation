@@ -61,7 +61,7 @@ Enable debug logging in the tracer.
 
 `DD_TRACING_ENABLED`
 : **Configuration**: N/A<br>
-**Default**: `true`<br>
+**Default**: `false`<br>
 Whether to enable tracing.
 
 `DD_TRACE_DEBUG`
